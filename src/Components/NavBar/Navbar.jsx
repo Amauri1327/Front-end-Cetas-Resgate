@@ -6,7 +6,7 @@ const Navbar = () => {
     duration-200 relative z-40">
       {/* upper navbar */}
       <div className="bg-primary py-2">
-        <div className="container flex justify-center items-center">
+        <div className="w-full flex justify-center items-center">
           <div>
             <a
               href="#"
