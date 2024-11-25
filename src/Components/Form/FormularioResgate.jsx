@@ -1,39 +1,126 @@
-import React from "react";
+import React, { useRef } from "react";
 
 const FormularioResgate = ({ onBack }) => {
+  const formRef = useRef(null); // Para acessar os campos do formulário
+
+  const handleFormSubmit = (event) => {
+    event.preventDefault(); // Impede o envio padrão do formulário
+  };
+
+  const handleKeyDown = (event, currentIndex) => {
+    if (event.key === "Enter") {
+      event.preventDefault(); // Impede o comportamento padrão do Enter
+      const inputs = Array.from(formRef.current.querySelectorAll("input, textarea"));
+      const nextInput = inputs[currentIndex + 1];
+      if (nextInput) {
+        nextInput.focus(); // Foca no próximo campo
+      }
+    }
+  };
+
   return (
-    <div className="p-4 max-w-md mx-auto bg-white rounded-xl shadow-md">
+    <div className="p-4 max-w-4xl mx-auto bg-white rounded-xl shadow-md">
       <h2 className="text-lg font-bold mb-4">Cadastrar Resgate</h2>
-      <form>
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700">
-            Nome do Animal
-          </label>
-          <input
-            type="text"
-            placeholder="Digite o nome do animal"
-            className="mt-1 block w-full px-3 py-2 border rounded-md"
-          />
+      <form ref={formRef} onSubmit={handleFormSubmit}>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Nome do Solicitante
+            </label>
+            <input
+              type="text"
+              placeholder="Digite o nome do solicitante"
+              className="mt-1 block w-full px-3 py-2 border rounded-md"
+              onKeyDown={(e) => handleKeyDown(e, 0)}
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Telefone do Solicitante
+            </label>
+            <input
+              type="text"
+              placeholder="Digite o telefone do solicitante"
+              className="mt-1 block w-full px-3 py-2 border rounded-md"
+              onKeyDown={(e) => handleKeyDown(e, 1)}
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Espécie
+            </label>
+            <input
+              type="text"
+              placeholder="Digite a espécie do animal"
+              className="mt-1 block w-full px-3 py-2 border rounded-md"
+              onKeyDown={(e) => handleKeyDown(e, 2)}
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Endereço
+            </label>
+            <input
+              type="text"
+              placeholder="Digite o endereço"
+              className="mt-1 block w-full px-3 py-2 border rounded-md"
+              onKeyDown={(e) => handleKeyDown(e, 3)}
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Bairro
+            </label>
+            <input
+              type="text"
+              placeholder="Digite o bairro"
+              className="mt-1 block w-full px-3 py-2 border rounded-md"
+              onKeyDown={(e) => handleKeyDown(e, 4)}
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Cidade
+            </label>
+            <input
+              type="text"
+              placeholder="Digite a cidade"
+              className="mt-1 block w-full px-3 py-2 border rounded-md"
+              onKeyDown={(e) => handleKeyDown(e, 5)}
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Data do Resgate
+            </label>
+            <input
+              type="date"
+              className="mt-1 block w-full px-3 py-2 border rounded-md"
+              onKeyDown={(e) => handleKeyDown(e, 6)}
+            />
+          </div>
         </div>
-        <div className="mb-4">
+        <div className="mt-4">
           <label className="block text-sm font-medium text-gray-700">
-            Data do Resgate
-          </label>
-          <input
-            type="date"
-            className="mt-1 block w-full px-3 py-2 border rounded-md"
-          />
-        </div>
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700">
-            Descrição
+            Situação do Animal
           </label>
           <textarea
-            placeholder="Digite a descrição"
+            placeholder="Descreva a situação do animal"
             className="mt-1 block w-full px-3 py-2 border rounded-md"
+            onKeyDown={(e) => handleKeyDown(e, 7)}
           ></textarea>
         </div>
-        <div className="flex justify-between">
+        <div className="mt-4">
+          <label className="block text-sm font-medium text-gray-700">
+            Destino do Animal
+          </label>
+          <textarea
+            placeholder="Descreva o destino do animal"
+            className="mt-1 block w-full px-3 py-2 border rounded-md"
+            onKeyDown={(e) => handleKeyDown(e, 8)}
+          ></textarea>
+        </div>
+        <div className="flex justify-between mt-4">
           <button
             type="button"
             onClick={onBack}
