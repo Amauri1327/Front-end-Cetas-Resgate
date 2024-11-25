@@ -1,27 +1,38 @@
-import React from "react";
+import React, { useState } from "react";
 import { MdOutlineAddBox } from "react-icons/md";
 import { HiOutlineDocumentReport } from "react-icons/hi";
+import FormularioResgate from "../../Components/Form/FormularioResgate"; // Import do componente
 
 export const Menu = () => {
-  const handlePress = () => {
-    console.log("Click");
+  const [showForm, setShowForm] = useState(false);
+
+  const handlePressCadastrar = () => {
+    setShowForm(true); // Exibe o formulário
+  };
+
+  const handleBackToMenu = () => {
+    setShowForm(false); // Retorna ao menu inicial
   };
 
   return (
     <div className="flex justify-center items-center mt-10">
-      <div className="text-center flex justify-center items-center gap-10 h-16 max-w-2xl">
-        <div className="bg-blue-100">
-          <button onClick={handlePress}>
-            <MdOutlineAddBox size={90} />
-            cadastrar
-          </button>
+      {!showForm ? (
+        <div className="text-center flex justify-center items-center gap-10 h-16 max-w-2xl">
+          <div className="bg-blue-100 rounded-xl">
+            <button onClick={handlePressCadastrar}>
+              <MdOutlineAddBox size={90} />
+              Cadastrar
+            </button>
+          </div>
+          <div className="bg-green-100 rounded-xl">
+            <button onClick={() => console.log("Relatório clicado")}>
+              <HiOutlineDocumentReport size={90} /> Relatório
+            </button>
+          </div>
         </div>
-        <div className="bg-green-50">
-          <button onClick={handlePress}>
-            <HiOutlineDocumentReport size={90} /> Relatorio
-          </button>
-        </div>
-      </div>
+      ) : (
+        <FormularioResgate onBack={handleBackToMenu} />
+      )}
     </div>
   );
 };
