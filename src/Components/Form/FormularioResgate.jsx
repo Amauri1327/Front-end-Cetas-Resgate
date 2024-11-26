@@ -1,16 +1,70 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 
 const FormularioResgate = ({ onBack }) => {
+  const [formData, setFormData] = useState({
+    applicant: "",
+    phoneApplicant: "",
+    specie: "",
+    address: "",
+    neighborhood: "",
+    city: "",
+    date: "",
+    animalSituation: "",
+    animalDestination: "",
+  });
+
   const formRef = useRef(null); // Para acessar os campos do formulário
 
-  const handleFormSubmit = (event) => {
+  const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const handleFormSubmit = async (event) => {
     event.preventDefault(); // Impede o envio padrão do formulário
+    setLoading(true);
+    setErrorMessage("");
+
+    try {
+        const response = await fetch("http://localhost:8080/resgates", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+           body: JSON.stringify(formData),
+        });
+
+        if (!response.ok) {
+            throw new Error("Error ao enviar os dados. Tente novamente.");
+        }
+
+        const data = await response.json();
+        console.log("Sucess: ", data);
+        alert("Resgate cadastrado com sucesso!");
+        onBack();
+    } catch (error) {
+        console.log("Erro: ", error);
+        setErrorMessage(error.message || "Error desconhecido.");
+    } finally {
+        setLoading(false);
+    }
+
+  };
+
+
+
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
   };
 
   const handleKeyDown = (event, currentIndex) => {
     if (event.key === "Enter") {
       event.preventDefault(); // Impede o comportamento padrão do Enter
-      const inputs = Array.from(formRef.current.querySelectorAll("input, textarea"));
+      const inputs = Array.from(
+        formRef.current.querySelectorAll("input, textarea")
+      );
       const nextInput = inputs[currentIndex + 1];
       if (nextInput) {
         nextInput.focus(); // Foca no próximo campo
@@ -29,7 +83,10 @@ const FormularioResgate = ({ onBack }) => {
             </label>
             <input
               type="text"
+              name="applicant"
               placeholder="Digite o nome do solicitante"
+              value={formData.applicant}
+              onChange={handleInputChange}
               className="mt-1 block w-full px-3 py-2 border rounded-md"
               onKeyDown={(e) => handleKeyDown(e, 0)}
             />
@@ -40,7 +97,10 @@ const FormularioResgate = ({ onBack }) => {
             </label>
             <input
               type="text"
+              name="phoneApplicant"
               placeholder="Digite o telefone do solicitante"
+              value={formData.phoneApplicant}
+              onChange={handleInputChange}
               className="mt-1 block w-full px-3 py-2 border rounded-md"
               onKeyDown={(e) => handleKeyDown(e, 1)}
             />
@@ -51,7 +111,10 @@ const FormularioResgate = ({ onBack }) => {
             </label>
             <input
               type="text"
+              name="specie"
               placeholder="Digite a espécie do animal"
+              value={formData.specie}
+              onChange={handleInputChange}
               className="mt-1 block w-full px-3 py-2 border rounded-md"
               onKeyDown={(e) => handleKeyDown(e, 2)}
             />
@@ -62,7 +125,10 @@ const FormularioResgate = ({ onBack }) => {
             </label>
             <input
               type="text"
+              name="address"
               placeholder="Digite o endereço"
+              value={formData.address}
+              onChange={handleInputChange}
               className="mt-1 block w-full px-3 py-2 border rounded-md"
               onKeyDown={(e) => handleKeyDown(e, 3)}
             />
@@ -73,7 +139,10 @@ const FormularioResgate = ({ onBack }) => {
             </label>
             <input
               type="text"
+              name="neighborhood"
               placeholder="Digite o bairro"
+              value={formData.neighborhood}
+              onChange={handleInputChange}
               className="mt-1 block w-full px-3 py-2 border rounded-md"
               onKeyDown={(e) => handleKeyDown(e, 4)}
             />
@@ -84,7 +153,10 @@ const FormularioResgate = ({ onBack }) => {
             </label>
             <input
               type="text"
+              name="city"
               placeholder="Digite a cidade"
+              value={formData.city}
+              onChange={handleInputChange}
               className="mt-1 block w-full px-3 py-2 border rounded-md"
               onKeyDown={(e) => handleKeyDown(e, 5)}
             />
@@ -95,6 +167,9 @@ const FormularioResgate = ({ onBack }) => {
             </label>
             <input
               type="date"
+              name="date"
+              value={formData.date}
+              onChange={handleInputChange}
               className="mt-1 block w-full px-3 py-2 border rounded-md"
               onKeyDown={(e) => handleKeyDown(e, 6)}
             />
@@ -105,7 +180,10 @@ const FormularioResgate = ({ onBack }) => {
             Situação do Animal
           </label>
           <textarea
+            name="animalSituation"
             placeholder="Descreva a situação do animal"
+            value={formData.animalSituation}
+            onChange={handleInputChange}
             className="mt-1 block w-full px-3 py-2 border rounded-md"
             onKeyDown={(e) => handleKeyDown(e, 7)}
           ></textarea>
@@ -115,7 +193,10 @@ const FormularioResgate = ({ onBack }) => {
             Destino do Animal
           </label>
           <textarea
+            name="animalDestination"
             placeholder="Descreva o destino do animal"
+            value={formData.animalDestination}
+            onChange={handleInputChange}
             className="mt-1 block w-full px-3 py-2 border rounded-md"
             onKeyDown={(e) => handleKeyDown(e, 8)}
           ></textarea>
