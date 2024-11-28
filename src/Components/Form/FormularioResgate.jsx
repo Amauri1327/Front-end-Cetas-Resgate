@@ -8,7 +8,7 @@ const FormularioResgate = ({ onBack }) => {
     address: "",
     neighborhood: "",
     city: "",
-    date: "",
+    data: "",
     animalSituation: "",
     animalDestination: "",
   });
@@ -166,9 +166,9 @@ const FormularioResgate = ({ onBack }) => {
               Data do Resgate
             </label>
             <input
-              type="date"
-              name="date"
-              value={formData.date}
+              type="text"
+              name="data"
+              value={formData.data}
               onChange={handleInputChange}
               className="mt-1 block w-full px-3 py-2 border rounded-md"
               onKeyDown={(e) => handleKeyDown(e, 6)}

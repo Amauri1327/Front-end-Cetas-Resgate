@@ -1,51 +1,45 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 
 const ListaResgates = () => {
-  // Dados estáticos de exemplo
-  const rescues = [
-    {
-      id: 1,
-      applicant: "João Silva",
-      phoneApplicant: "(79) 99999-1234",
-      specie: "Papagaio",
-      address: "Rua das Flores, 123",
-      neighborhood: "Centro",
-      city: "Aracaju",
-      data: "2024-11-01",
-      animalSituation: "Ferido",
-      animalDestination: "Cetas",
-    },
-    {
-      id: 2,
-      applicant: "Maria Oliveira",
-      phoneApplicant: "(79) 98888-5678",
-      specie: "Tartaruga",
-      address: "Avenida do Mar, 456",
-      neighborhood: "Atalaia",
-      city: "Aracaju",
-      data: "2024-10-25",
-      animalSituation: "Saudável",
-      animalDestination: "Reserva Natural",
-    },
-    {
-      id: 3,
-      applicant: "Carlos Almeida",
-      phoneApplicant: "(79) 97777-9101",
-      specie: "Gavião",
-      address: "Praça das Árvores, 789",
-      neighborhood: "Farolândia",
-      city: "Aracaju",
-      data: "2024-09-15",
-      animalSituation: "Ferido",
-      animalDestination: "Cetas",
-    },
-  ];
+  const [rescues, setRescues] = useState([]); // Estado para armazenar os dados
+  const [loading, setLoading] = useState(true); // Estado para controlar o carregamento
+  const [error, setError] = useState(null); // Estado para controlar erros
+
+  // Função para buscar os dados da API
+  const fetchRescues = async () => {
+    try {
+      const response = await fetch("http://localhost:8080/resgates");
+      if (!response.ok) {
+        throw new Error("Erro ao buscar os dados");
+      }
+      const data = await response.json();
+      setRescues(data); // Atualiza o estado com os dados da API
+      setLoading(false); // Finaliza o carregamento
+    } catch (err) {
+      setError("Erro ao carregar os dados."); // Define uma mensagem de erro
+      setLoading(false);
+    }
+  };
+
+  // useEffect para buscar os dados ao carregar o componente
+  useEffect(() => {
+    fetchRescues();
+  }, []);
+
+  // Renderização condicional
+  if (loading) {
+    return <p className="text-center mt-6">Carregando...</p>;
+  }
+
+  if (error) {
+    return <p className="text-center mt-6 text-red-500">{error}</p>;
+  }
 
   return (
-    <div className="mt-14">
-      <h2 className="text-xl font-semibold mb-4 text-center">Lista de Resgates</h2>
+    <div className="mt-6">
+      <h2 className="text-xl font-bold mb-4 text-center">Lista de Resgates</h2>
       <div className="overflow-x-auto">
-        <table className="table-auto w-3/6/5 mx-auto border border-gray-300 shadow-sm">
+        <table className="table-auto w-2/3 mx-auto border border-gray-300 shadow-sm">
           <thead className="bg-gray-200">
             <tr>
               <th className="px-4 py-2 border border-gray-300">Solicitante</th>
@@ -59,28 +53,16 @@ const ListaResgates = () => {
           </thead>
           <tbody>
             {rescues.map((rescue) => (
-              <tr key={rescue.id}>
-                <td className="px-4 py-2 border border-gray-300">
-                  {rescue.applicant}
-                </td>
-                <td className="px-4 py-2 border border-gray-300">
-                  {rescue.phoneApplicant}
-                </td>
-                <td className="px-4 py-2 border border-gray-300">
-                  {rescue.specie}
-                </td>
+              <tr key={rescue.id} className="hover:bg-gray-100">
+                <td className="px-4 py-2 border border-gray-300">{rescue.applicant}</td>
+                <td className="px-4 py-2 border border-gray-300">{rescue.phoneApplicant}</td>
+                <td className="px-4 py-2 border border-gray-300">{rescue.specie}</td>
                 <td className="px-4 py-2 border border-gray-300">
                   {rescue.address}, {rescue.neighborhood}, {rescue.city}
                 </td>
-                <td className="px-4 py-2 border border-gray-300">
-                  {rescue.data}
-                </td>
-                <td className="px-4 py-2 border border-gray-300">
-                  {rescue.animalSituation}
-                </td>
-                <td className="px-4 py-2 border border-gray-300">
-                  {rescue.animalDestination}
-                </td>
+                <td className="px-4 py-2 border border-gray-300">{rescue.data}</td>
+                <td className="px-4 py-2 border border-gray-300">{rescue.animalSituation}</td>
+                <td className="px-4 py-2 border border-gray-300">{rescue.animalDestination}</td>
               </tr>
             ))}
           </tbody>
