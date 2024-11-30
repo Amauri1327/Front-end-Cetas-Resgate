@@ -2,8 +2,15 @@ import React, { useState } from "react";
 import { MdOutlineAddBox } from "react-icons/md";
 import { HiOutlineDocumentReport } from "react-icons/hi";
 import FormularioResgate from "../../Components/Form/FormularioResgate"; // Import do componente
+import Modal from "../Modal/modal-relatorio"
 
 export const Menu = () => {
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
+  const openModal = () => setIsModalVisible(true);
+  const closeModal = () => setIsModalVisible(false);
+
+
   const [showForm, setShowForm] = useState(false);
 
   const handlePressCadastrar = () => {
@@ -24,10 +31,21 @@ export const Menu = () => {
               Cadastrar
             </button>
           </div>
+
+
+
+
+
+
+
+
+
+
           <div className="bg-green-100 rounded-xl">
-            <button onClick={() => console.log("Relatório clicado")}>
+            <button onClick={openModal}>
               <HiOutlineDocumentReport size={90} /> Relatório
             </button>
+            <Modal isVisible={isModalVisible} onClose={closeModal}/>
           </div>
         </div>
       ) : (
