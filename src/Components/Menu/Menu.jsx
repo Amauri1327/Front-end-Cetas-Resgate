@@ -32,15 +32,6 @@ export const Menu = () => {
             </button>
           </div>
 
-
-
-
-
-
-
-
-
-
           <div className="bg-green-100 rounded-xl">
             <button onClick={openModal}>
               <HiOutlineDocumentReport size={90} /> Relatório

@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
 
-const FormularioResgate = ({ onBack }) => {
+const FormularioResgate = ({ onBack, onAddRescue }) => {
   const [formData, setFormData] = useState({
     applicant: "",
     phoneApplicant: "",
@@ -39,6 +39,7 @@ const FormularioResgate = ({ onBack }) => {
         const data = await response.json();
         console.log("Sucess: ", data);
         alert("Resgate cadastrado com sucesso!");
+        onAddRescue(data); // notifica o componente pai;
         onBack();
     } catch (error) {
         console.log("Erro: ", error);
