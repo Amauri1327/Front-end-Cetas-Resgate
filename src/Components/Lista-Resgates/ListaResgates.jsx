@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { MdDeleteForever } from "react-icons/md";
-import FormularioResgate from "../Form/FormularioResgate";
 
 const ListaResgates = () => {
   const [rescues, setRescues] = useState([]); // Estado para armazenar os dados
@@ -16,7 +15,14 @@ const ListaResgates = () => {
         throw new Error("Erro ao buscar os dados");
       }
       const data = await response.json();
-      setRescues(data); // Atualiza o estado com os dados da API
+    
+      setRescues((prevRescues) => {
+        const newRescue = data.filter(
+          (newRescue) => !prevRescues.some((rescue) => rescue.id === newRescue.id)
+        );
+        return [...newRescue, ...prevRescues];
+      })
+
       setLoading(false); // Finaliza o carregamento
     } catch (err) {
       setError("Erro ao carregar os dados."); // Define uma mensagem de erro
@@ -44,16 +50,18 @@ const ListaResgates = () => {
     }
   }
 
-  const handleAddRescue = (newRescue) => {
-    setRescues((prevRescues) => [newRescue, ...prevRescues]);
-  };
-
 
   // useEffect para buscar os dados ao carregar o componente
   useEffect(() => {
-    fetchRescues();
+    fetchRescues(); // Carrega os dados iniciais
+  
+    // Configura o polling a cada 10 segundos
+    const intervalId = setInterval(fetchRescues, 1000); // 10000ms = 10s
+  
+    // Limpa o intervalo quando o componente for desmontado
+    return () => clearInterval(intervalId);
   }, []);
-
+  
   // Renderização condicional
   if (loading) {
     return <p className="text-center mt-6">Carregando...</p>;
