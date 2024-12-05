@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { MdDeleteForever } from "react-icons/md";
-import FormularioResgate from "../Form/FormularioResgate";
+import { FaEdit } from "react-icons/fa";
 
 const ListaResgates = () => {
   const [rescues, setRescues] = useState([]); // Estado para armazenar os dados
@@ -46,7 +46,7 @@ const ListaResgates = () => {
 
   const onAddRescue = (newRescue) => {
     setRescues((prevRescues) => [newRescue, ...prevRescues]);
-  }
+  };
 
   // useEffect para buscar os dados ao carregar o componente
   useEffect(() => {
@@ -76,7 +76,7 @@ const ListaResgates = () => {
               <th className="px-4 py-2 border border-gray-300">Data</th>
               <th className="px-4 py-2 border border-gray-300">Situação</th>
               <th className="px-4 py-2 border border-gray-300">Destino</th>
-              <th className="px-4 py-2 border border-gray-300">Deletar</th>
+              <th className="px-4 py-2 border border-gray-300">Ações</th>
             </tr>
           </thead>
           <tbody>
@@ -104,12 +104,19 @@ const ListaResgates = () => {
                   {rescue.animalDestination}
                 </td>
                 <td className="px-4 py-2 border border-gray-300">
-                  <MdDeleteForever
-                    color="#a52a2a"
-                    onClick={() => deleteData(rescue.id)}
-                    className="pl-2 cursor-pointer"
-                    size={40}
-                  />
+                  <div className="flex gap-6">
+                    <MdDeleteForever
+                      color="#a52a2a"
+                      onClick={() => deleteData(rescue.id)}
+                      className="pl-2 cursor-pointer"
+                      size={46}
+                    />
+                    <FaEdit
+                      onClick={() => console.log("editar")}
+                      className="pl-2 cursor-pointer"
+                      size={36}
+                    />
+                  </div>
                 </td>
               </tr>
             ))}
