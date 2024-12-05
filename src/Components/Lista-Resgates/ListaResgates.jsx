@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { MdDeleteForever } from "react-icons/md";
+import FormularioResgate from "../Form/FormularioResgate";
 
 const ListaResgates = () => {
   const [rescues, setRescues] = useState([]); // Estado para armazenar os dados
   const [loading, setLoading] = useState(true); // Estado para controlar o carregamento
   const [error, setError] = useState(null); // Estado para controlar erros
-  const [showForm, setShowForm] = useState(false) // controle para mostrar o formulario
 
   // Função para buscar os dados da API
   const fetchRescues = async () => {
@@ -15,15 +15,9 @@ const ListaResgates = () => {
         throw new Error("Erro ao buscar os dados");
       }
       const data = await response.json();
-    
-      setRescues((prevRescues) => {
-        const newRescue = data.filter(
-          (newRescue) => !prevRescues.some((rescue) => rescue.id === newRescue.id)
-        );
-        return [...newRescue, ...prevRescues];
-      })
 
-      setLoading(false); // Finaliza o carregamento
+      setRescues(data);
+      setLoading(false);
     } catch (err) {
       setError("Erro ao carregar os dados."); // Define uma mensagem de erro
       setLoading(false);
@@ -34,7 +28,7 @@ const ListaResgates = () => {
   const deleteData = async (id) => {
     try {
       const resp = await fetch(`http://localhost:8080/resgates/${id}`, {
-        method: "DELETE"
+        method: "DELETE",
       });
 
       if (!resp.ok) {
@@ -48,20 +42,17 @@ const ListaResgates = () => {
       console.error("Erro ao deletar o resgate: ", error);
       alert("Error ao deletar o resgate!");
     }
-  }
+  };
 
+  const onAddRescue = (newRescue) => {
+    setRescues((prevRescues) => [newRescue, ...prevRescues]);
+  }
 
   // useEffect para buscar os dados ao carregar o componente
   useEffect(() => {
     fetchRescues(); // Carrega os dados iniciais
-  
-    // Configura o polling a cada 10 segundos
-    const intervalId = setInterval(fetchRescues, 1000); // 10000ms = 10s
-  
-    // Limpa o intervalo quando o componente for desmontado
-    return () => clearInterval(intervalId);
   }, []);
-  
+
   // Renderização condicional
   if (loading) {
     return <p className="text-center mt-6">Carregando...</p>;
@@ -113,9 +104,12 @@ const ListaResgates = () => {
                   {rescue.animalDestination}
                 </td>
                 <td className="px-4 py-2 border border-gray-300">
-                  <MdDeleteForever 
-                  onClick={() => deleteData(rescue.id)}
-                  className="pl-2 cursor-pointer" size={40} />
+                  <MdDeleteForever
+                    color="#a52a2a"
+                    onClick={() => deleteData(rescue.id)}
+                    className="pl-2 cursor-pointer"
+                    size={40}
+                  />
                 </td>
               </tr>
             ))}

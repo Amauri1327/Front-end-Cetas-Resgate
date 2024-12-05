@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
 
-const FormularioResgate = ({ onBack, onAddRescue }) => {
+const FormularioResgate = ({ onBack, onAddRescue, fetchRescues }) => {
   const [formData, setFormData] = useState({
     applicant: "",
     phoneApplicant: "",
@@ -39,8 +39,18 @@ const FormularioResgate = ({ onBack, onAddRescue }) => {
         const data = await response.json();
         console.log("Sucess: ", data);
         alert("Resgate cadastrado com sucesso!");
+
         onAddRescue(data); // notifica o componente pai;
+
+        try{
+          await fetchRescues();
+        } catch (error){
+          console.error("Erro ao atualizar a lista de resgates, recarregando a pagina ", error);
+          window.location.reload(); // recarrega pagina
+        }
+
         onBack();
+
     } catch (error) {
         console.log("Erro: ", error);
         setErrorMessage(error.message || "Error desconhecido.");
@@ -212,9 +222,10 @@ const FormularioResgate = ({ onBack, onAddRescue }) => {
           </button>
           <button
             type="submit"
+            disabled={loading}
             className="px-4 py-2 bg-blue-500 text-white rounded-md"
           >
-            Salvar
+            {loading ? "Cadastrando..." : "Cadastrar Resgate"}
           </button>
         </div>
       </form>

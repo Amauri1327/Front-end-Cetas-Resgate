@@ -2,16 +2,16 @@ import React, { useState } from "react";
 import { MdOutlineAddBox } from "react-icons/md";
 import { HiOutlineDocumentReport } from "react-icons/hi";
 import FormularioResgate from "../../Components/Form/FormularioResgate"; // Import do componente
-import Modal from "../Modal/modal-relatorio"
+import ListaResgates from "../Lista-Resgates/ListaResgates";
+import Modal from "../Modal/modal-relatorio";
 
 export const Menu = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [showForm, setShowForm] = useState(false);
+  const [rescues, setRescues] = useState([]);
 
   const openModal = () => setIsModalVisible(true);
   const closeModal = () => setIsModalVisible(false);
-
-
-  const [showForm, setShowForm] = useState(false);
 
   const handlePressCadastrar = () => {
     setShowForm(true); // Exibe o formulário
@@ -19,6 +19,11 @@ export const Menu = () => {
 
   const handleBackToMenu = () => {
     setShowForm(false); // Retorna ao menu inicial
+  };
+
+  const handleAddRescue = (newRescue) => {
+    setRescues((prevRescue) => [newRescue, ...prevRescue]);
+    setShowForm(false);
   };
 
   return (
@@ -36,11 +41,14 @@ export const Menu = () => {
             <button onClick={openModal}>
               <HiOutlineDocumentReport size={90} /> Relatório
             </button>
-            <Modal isVisible={isModalVisible} onClose={closeModal}/>
+            <Modal isVisible={isModalVisible} onClose={closeModal} />
           </div>
         </div>
       ) : (
-        <FormularioResgate onBack={handleBackToMenu} />
+        <FormularioResgate
+          onBack={handleBackToMenu}
+          onAddRescue={handleAddRescue} // Passa a funcao para adicionar resgate
+        />
       )}
     </div>
   );
