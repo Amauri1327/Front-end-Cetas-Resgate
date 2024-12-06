@@ -1,8 +1,19 @@
-# React + Vite
+# Cetas-Resgate Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Descrição
 
-Currently, two official plugins are available:
+Este repositório contém o código frontend do projeto **Cetas-Resgate**, uma aplicação web para o controle de resgates de animais. O projeto permite que os usuários cadastrem, editem e visualizem resgates de animais, facilitando o processo de organização e acompanhamento das ocorrências.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Tecnologias Utilizadas
+
+- **React**: Biblioteca JavaScript para construção da interface do usuário.
+- **Tailwind CSS**: Framework CSS para estilização.
+- **Fetch**: Para fazer requisições HTTP à API.
+
+## Funcionalidades
+
+- **Cadastro de Resgates**: Permite que os usuários cadastrem resgates de animais com informações como nome do solicitante, telefone, endereço, espécie, etc.
+- **Edição de Resgates**: Usuários podem editar registros de resgates já cadastrados.
+- **Listagem de Resgates**: Visualização dos resgates cadastrados.
+- **Modais de Ação**: Modal para editar ou visualizar detalhes de um resgate.
+
