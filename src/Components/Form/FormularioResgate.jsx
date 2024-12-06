@@ -24,43 +24,42 @@ const FormularioResgate = ({ onBack, onAddRescue, fetchRescues }) => {
     setErrorMessage("");
 
     try {
-        const response = await fetch("http://localhost:8080/resgates", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-           body: JSON.stringify(formData),
-        });
+      const response = await fetch("http://localhost:8080/resgates", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
 
-        if (!response.ok) {
-            throw new Error("Error ao enviar os dados. Tente novamente.");
-        }
+      if (!response.ok) {
+        throw new Error("Error ao enviar os dados. Tente novamente.");
+      }
 
-        const data = await response.json();
-        console.log("Sucess: ", data);
-        alert("Resgate cadastrado com sucesso!");
+      const data = await response.json();
+      console.log("Sucess: ", data);
+      alert("Resgate cadastrado com sucesso!");
 
-        onAddRescue(data); // notifica o componente pai;
+      onAddRescue(data); // notifica o componente pai;
 
-        try{
-          await fetchRescues();
-        } catch (error){
-          console.error("Erro ao atualizar a lista de resgates, recarregando a pagina ", error);
-          window.location.reload(); // recarrega pagina
-        }
+      try {
+        await fetchRescues();
+      } catch (error) {
+        console.error(
+          "Erro ao atualizar a lista de resgates, recarregando a pagina ",
+          error
+        );
+        window.location.reload(); // recarrega pagina
+      }
 
-        onBack();
-
+      onBack();
     } catch (error) {
-        console.log("Erro: ", error);
-        setErrorMessage(error.message || "Error desconhecido.");
+      console.log("Erro: ", error);
+      setErrorMessage(error.message || "Error desconhecido.");
     } finally {
-        setLoading(false);
+      setLoading(false);
     }
-
   };
-
-
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;

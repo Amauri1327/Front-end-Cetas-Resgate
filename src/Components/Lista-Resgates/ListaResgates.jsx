@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { MdDeleteForever } from "react-icons/md";
 import { FaEdit } from "react-icons/fa";
+import EditModal from "../Modal/modal-editar-resgate";
 
 const ListaResgates = () => {
   const [rescues, setRescues] = useState([]); // Estado para armazenar os dados
   const [loading, setLoading] = useState(true); // Estado para controlar o carregamento
   const [error, setError] = useState(null); // Estado para controlar erros
+  const [selectedId, setSelectedId] = useState(null); // Armazenando o id do resgate a ser editado
+  const [showModal, setShowModal] = useState(false); // Controlando o estado de visibilidade do modal
+
 
   // Função para buscar os dados da API
   const fetchRescues = async () => {
@@ -44,9 +48,15 @@ const ListaResgates = () => {
     }
   };
 
-  const onAddRescue = (newRescue) => {
-    setRescues((prevRescues) => [newRescue, ...prevRescues]);
-  };
+  const handleEdit = (id) => {
+    setSelectedId(id);
+    setShowModal(true);
+  }
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+    setSelectedId(null);
+  }
 
   // useEffect para buscar os dados ao carregar o componente
   useEffect(() => {
@@ -112,7 +122,7 @@ const ListaResgates = () => {
                       size={46}
                     />
                     <FaEdit
-                      onClick={() => console.log("editar")}
+                      onClick={() => handleEdit(rescue.id)} // Abri o modal de edição
                       className="pl-2 cursor-pointer"
                       size={36}
                     />
@@ -123,6 +133,12 @@ const ListaResgates = () => {
           </tbody>
         </table>
       </div>
+      <EditModal 
+        show={showModal}
+        handleClose={handleCloseModal}
+        id={selectedId}
+        handleEdit={fetchRescues} //Passando a função para recarregar os dados após edição
+      />
     </div>
   );
 };
