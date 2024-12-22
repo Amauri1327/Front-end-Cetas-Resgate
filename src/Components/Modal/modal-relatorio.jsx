@@ -3,7 +3,7 @@ import React from "react";
 const Modal = ({ isVisible, onClose }) => {
   const handleGenerateReport = async () => {
     try {
-      const response = await fetch("http://localhost:8080/resgates/report/excel", {
+      const response = await fetch("http://localhost:8080/resgates/report/applicant/excel", {
         method: "GET",
       });
 
@@ -42,7 +42,7 @@ const Modal = ({ isVisible, onClose }) => {
         </button>
         <div className="mt-5 text-center">
           <h1 className="text-xl font-bold mb-4">
-            Relatório de Solicitantes
+            Relatórios
           </h1>
           <button
             onClick={handleGenerateReport}
