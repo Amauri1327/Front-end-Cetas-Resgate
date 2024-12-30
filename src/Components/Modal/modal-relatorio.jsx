@@ -1,9 +1,27 @@
-import React from "react";
+import React, { useState } from "react";
 
 const Modal = ({ isVisible, onClose }) => {
-  const handleGenerateReport = async () => {
+  const [speciesName, setSpeciesName] = useState("");
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+
+  const handleGenerateReport = async (reportType) => {
+    let endPoint;
+
+    switch (reportType) {
+      case "applicant":
+        endPoint = "/report/applicant/excel";
+        break;
+      case "rescue":
+        // Construir endpoint com os parâmetros da espécie e datas
+        endPoint = `/list-animalsName-between-dates/export?especie=${speciesName}&dataInicio=${startDate}&dataFim=${endDate}`;
+        break;
+      default:
+        break;
+    }
+
     try {
-      const response = await fetch("http://localhost:8080/resgates/report/applicant/excel", {
+      const response = await fetch(`http://localhost:8080/resgates${endPoint}`, {
         method: "GET",
       });
 
@@ -17,7 +35,10 @@ const Modal = ({ isVisible, onClose }) => {
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement("a");
       link.href = url;
-      link.setAttribute("download", "relatorio_solicitantes.xlsx");
+      link.setAttribute(
+        "download",
+        `relatorio_${reportType}_${speciesName || "geral"}.xlsx`
+      );
       document.body.appendChild(link);
       link.click();
 
@@ -41,14 +62,53 @@ const Modal = ({ isVisible, onClose }) => {
           X
         </button>
         <div className="mt-5 text-center">
-          <h1 className="text-xl font-bold mb-4">
-            Relatórios
-          </h1>
+          <h1 className="text-xl font-bold mb-4">Relatórios</h1>
+
+          {/* Botão para gerar relatório de solicitantes */}
           <button
-            onClick={handleGenerateReport}
+            id="applicant"
+            onClick={() => handleGenerateReport("applicant")}
             className="px-6 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
           >
-            Gerar Relatório
+            Gerar Relatório de solicitantes
+          </button>
+
+          <hr className="my-4" />
+
+          <h2 className="text-lg font-bold mb-2">Relatório por Espécie</h2>
+
+          {/* Campo para o nome da espécie */}
+          <input
+            type="text"
+            placeholder="Nome da espécie"
+            value={speciesName}
+            onChange={(e) => setSpeciesName(e.target.value)}
+            className="w-full mb-3 p-2 border rounded-md"
+          />
+
+          {/* Campo para a data inicial */}
+          <input
+            type="date"
+            value={startDate}
+            onChange={(e) => setStartDate(e.target.value)}
+            className="w-full mb-3 p-2 border rounded-md"
+          />
+
+          {/* Campo para a data final */}
+          <input
+            type="date"
+            value={endDate}
+            onChange={(e) => setEndDate(e.target.value)}
+            className="w-full mb-3 p-2 border rounded-md"
+          />
+
+          {/* Botão para gerar relatório de espécie */}
+          <button
+            id="rescue"
+            onClick={() => handleGenerateReport("rescue")}
+            className="px-6 py-2 bg-green-500 text-white rounded-md hover:bg-green-600"
+          >
+            Gerar Relatório de espécie
           </button>
         </div>
       </div>
