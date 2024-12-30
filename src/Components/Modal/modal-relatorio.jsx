@@ -53,8 +53,8 @@ const Modal = ({ isVisible, onClose }) => {
   if (!isVisible) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-      <div className="bg-white p-5 rounded-md shadow-md w-96">
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center -mt-80">
+      <div className="bg-white p-5 rounded-md shadow-md w-7/12 ">
         <button
           onClick={onClose}
           className="text-xl text-red-500 font-bold float-right"
@@ -75,8 +75,14 @@ const Modal = ({ isVisible, onClose }) => {
 
           <hr className="my-4" />
 
-          <h2 className="text-lg font-bold mb-2">Relatório por Espécie</h2>
+          <h2 className="text-lg font-bold mb-2 text-left">Relatório por Espécie</h2>
 
+
+
+
+
+        {/* ================================================================================ */}
+          <div className="flex items-center gap-3">
           {/* Campo para o nome da espécie */}
           <input
             type="text"
@@ -106,10 +112,16 @@ const Modal = ({ isVisible, onClose }) => {
           <button
             id="rescue"
             onClick={() => handleGenerateReport("rescue")}
-            className="px-6 py-2 bg-green-500 text-white rounded-md hover:bg-green-600"
+            className="px-4 w-56 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 -mt-3"
           >
-            Gerar Relatório de espécie
+            Gerar
           </button>
+          </div>
+        {/* ----------------------------------------------------------- */}
+
+
+
+
         </div>
       </div>
     </div>
