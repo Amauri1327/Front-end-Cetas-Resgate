@@ -1,21 +1,37 @@
 import React, { useState } from "react";
+import { PiKeyReturnThin } from "react-icons/pi";
 
 const Modal = ({ isVisible, onClose }) => {
-  const [speciesName, setSpeciesName] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
 
   const handleGenerateReport = async (reportType) => {
+
+    if (!startDate || !endDate) {
+      alert("Por favor, preencher as datas inicial e final.");
+      return;
+    }
+    if (reportType === "rescueBySpecie" && !searchTerm) {
+      alert("Por favor preencher o nome da espécie.");
+      return;
+    }
+
     let endPoint;
 
     switch (reportType) {
       case "applicant":
         endPoint = "/report/applicant/excel";
         break;
-      case "rescue":
-        // Construir endpoint com os parâmetros da espécie e datas
-        endPoint = `/list-animalsName-between-dates/export?especie=${speciesName}&dataInicio=${startDate}&dataFim=${endDate}`;
+
+      case "rescueBySpecie":
+        endPoint = `/list-animalsName-between-dates/export?especie=${searchTerm}&dataInicio=${startDate}&dataFim=${endDate}`;
         break;
+
+      case "rescueByDateRange":
+        endPoint = `/list-rescue-between-dates/export?startDate=${startDate}&endDate=${endDate}`;
+        break;
+
       default:
         break;
     }
@@ -37,7 +53,7 @@ const Modal = ({ isVisible, onClose }) => {
       link.href = url;
       link.setAttribute(
         "download",
-        `relatorio_${reportType}_${speciesName || "geral"}.xlsx`
+        `relatorio_${reportType}_${searchTerm || "geral"}.xlsx`
       );
       document.body.appendChild(link);
       link.click();
@@ -87,8 +103,8 @@ const Modal = ({ isVisible, onClose }) => {
           <input
             type="text"
             placeholder="Nome da espécie"
-            value={speciesName}
-            onChange={(e) => setSpeciesName(e.target.value)}
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
             className="w-full mb-3 p-2 border rounded-md"
           />
 
@@ -110,14 +126,53 @@ const Modal = ({ isVisible, onClose }) => {
 
           {/* Botão para gerar relatório de espécie */}
           <button
-            id="rescue"
-            onClick={() => handleGenerateReport("rescue")}
+            id="rescueBySpecie"
+            onClick={() => handleGenerateReport("rescueBySpecie")}
             className="px-4 w-56 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 -mt-3"
           >
             Gerar
           </button>
           </div>
-        {/* ----------------------------------------------------------- */}
+        {/* ================================================================================ */}
+
+        <hr className="my-1"/>
+
+        <h2 className="text-lg font-bold mb-2 text-left">Relatório  Resgates</h2>
+
+
+
+        <div className="flex items-center gap-3">
+      
+          {/* Campo para a data inicial */}
+          <input
+            type="date"
+            value={startDate}
+            onChange={(e) => setStartDate(e.target.value)}
+            className="w-full mb-3 p-2 border rounded-md"
+          />
+
+          {/* Campo para a data final */}
+          <input
+            type="date"
+            value={endDate}
+            onChange={(e) => setEndDate(e.target.value)}
+            className="w-full mb-3 p-2 border rounded-md"
+          />
+
+          {/* Botão para gerar relatório de espécie */}
+          <button
+            id="rescueByDateRange"
+            onClick={() => handleGenerateReport("rescueByDateRange")}
+            className="px-4 w-56 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 -mt-3"
+          >
+            Gerar
+          </button>
+          </div>
+        {/* ================================================================================ */}
+
+
+          
+
 
 
 
