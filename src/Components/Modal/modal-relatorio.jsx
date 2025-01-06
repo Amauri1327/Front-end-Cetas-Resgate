@@ -7,7 +7,6 @@ const Modal = ({ isVisible, onClose }) => {
   const [endDate, setEndDate] = useState("");
 
   const handleGenerateReport = async (reportType) => {
-
     if (!startDate || !endDate) {
       alert("Por favor, preencher as datas inicial e final.");
       return;
@@ -32,14 +31,21 @@ const Modal = ({ isVisible, onClose }) => {
         endPoint = `/list-rescue-between-dates/export?startDate=${startDate}&endDate=${endDate}`;
         break;
 
+      case "rescueByCityDateRange":
+        endPoint = `/list-rescue-city-between-dates/export?city=${searchTerm}&startDate=${startDate}&endDate=${endDate}`;
+        break;
+
       default:
         break;
     }
 
     try {
-      const response = await fetch(`http://localhost:8080/resgates${endPoint}`, {
-        method: "GET",
-      });
+      const response = await fetch(
+        `http://localhost:8080/resgates${endPoint}`,
+        {
+          method: "GET",
+        }
+      );
 
       if (!response.ok) {
         throw new Error("Erro ao gerar o relatório");
@@ -53,7 +59,7 @@ const Modal = ({ isVisible, onClose }) => {
       link.href = url;
       link.setAttribute(
         "download",
-        `relatorio_${reportType}_${searchTerm || "geral"}.xlsx`
+        `relatorio:_Resgates_${searchTerm || "geral"}, ${startDate} até ${endDate}.xlsx`
       );
       document.body.appendChild(link);
       link.click();
@@ -91,89 +97,134 @@ const Modal = ({ isVisible, onClose }) => {
 
           <hr className="my-4" />
 
-          <h2 className="text-lg font-bold mb-2 text-left">Relatório por Espécie</h2>
+          <h2 className="text-lg font-bold mb-2 text-left">
+            Relatório por Espécie
+          </h2>
 
 
 
-
-
-        {/* ================================================================================ */}
+          {/* ================================================================================ */}
           <div className="flex items-center gap-3">
-          {/* Campo para o nome da espécie */}
-          <input
-            type="text"
-            placeholder="Nome da espécie"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full mb-3 p-2 border rounded-md"
-          />
+            {/* Campo para o nome da espécie */}
+            <input
+              type="text"
+              placeholder="Nome da espécie"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full mb-3 p-2 border rounded-md"
+            />
 
-          {/* Campo para a data inicial */}
-          <input
-            type="date"
-            value={startDate}
-            onChange={(e) => setStartDate(e.target.value)}
-            className="w-full mb-3 p-2 border rounded-md"
-          />
+            {/* Campo para a data inicial */}
+            <input
+              type="date"
+              value={startDate}
+              onChange={(e) => setStartDate(e.target.value)}
+              className="w-full mb-3 p-2 border rounded-md"
+            />
 
-          {/* Campo para a data final */}
-          <input
-            type="date"
-            value={endDate}
-            onChange={(e) => setEndDate(e.target.value)}
-            className="w-full mb-3 p-2 border rounded-md"
-          />
+            {/* Campo para a data final */}
+            <input
+              type="date"
+              value={endDate}
+              onChange={(e) => setEndDate(e.target.value)}
+              className="w-full mb-3 p-2 border rounded-md"
+            />
 
-          {/* Botão para gerar relatório de espécie */}
-          <button
-            id="rescueBySpecie"
-            onClick={() => handleGenerateReport("rescueBySpecie")}
-            className="px-4 w-56 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 -mt-3"
-          >
-            Gerar
-          </button>
+            {/* Botão para gerar relatório de espécie */}
+            <button
+              id="rescueBySpecie"
+              onClick={() => handleGenerateReport("rescueBySpecie")}
+              className="px-4 w-56 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 -mt-3"
+            >
+              Gerar
+            </button>
           </div>
-        {/* ================================================================================ */}
-
-        <hr className="my-1"/>
-
-        <h2 className="text-lg font-bold mb-2 text-left">Relatório  Resgates</h2>
 
 
 
-        <div className="flex items-center gap-3">
-      
-          {/* Campo para a data inicial */}
-          <input
-            type="date"
-            value={startDate}
-            onChange={(e) => setStartDate(e.target.value)}
-            className="w-full mb-3 p-2 border rounded-md"
-          />
+          {/* ================================================================================ */}
 
-          {/* Campo para a data final */}
-          <input
-            type="date"
-            value={endDate}
-            onChange={(e) => setEndDate(e.target.value)}
-            className="w-full mb-3 p-2 border rounded-md"
-          />
+          <hr className="my-1" />
 
-          {/* Botão para gerar relatório de espécie */}
-          <button
-            id="rescueByDateRange"
-            onClick={() => handleGenerateReport("rescueByDateRange")}
-            className="px-4 w-56 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 -mt-3"
-          >
-            Gerar
-          </button>
+          <h2 className="text-lg font-bold mb-2 text-left">
+            Relatório Resgates
+          </h2>
+
+          <div className="flex items-center gap-3">
+            {/* Campo para a data inicial */}
+            <input
+              type="date"
+              value={startDate}
+              onChange={(e) => setStartDate(e.target.value)}
+              className="w-full mb-3 p-2 border rounded-md"
+            />
+
+            {/* Campo para a data final */}
+            <input
+              type="date"
+              value={endDate}
+              onChange={(e) => setEndDate(e.target.value)}
+              className="w-full mb-3 p-2 border rounded-md"
+            />
+
+            {/* Botão para gerar relatório de espécie */}
+            <button
+              id="rescueByDateRange"
+              onClick={() => handleGenerateReport("rescueByDateRange")}
+              className="px-4 w-56 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 -mt-3"
+            >
+              Gerar
+            </button>
           </div>
-        {/* ================================================================================ */}
+          {/* ================================================================================ */}
 
 
-          
 
 
+          <hr className="my-1" />
+
+          <h2 className="text-lg font-bold mb-2 text-left">
+            Relatório Resgates por Cidade
+          </h2>
+
+          <div className="flex items-center gap-3">
+            
+            {/* Campo para termo de busca */}
+            <input 
+              type="text" 
+              value={searchTerm} 
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full mb-3 p-2 border rounded-md"
+              placeholder="Ex: Aracaju"
+            />
+            
+            {/* Campo para a data inicial */}
+            <input
+              type="date"
+              value={startDate}
+              onChange={(e) => setStartDate(e.target.value)}
+              className="w-full mb-3 p-2 border rounded-md"
+            />
+
+            {/* Campo para a data final */}
+            <input
+              type="date"
+              value={endDate}
+              onChange={(e) => setEndDate(e.target.value)}
+              className="w-full mb-3 p-2 border rounded-md"
+            />
+
+            {/* Botão para gerar relatório de espécie */}
+            <button
+              id="rescueByCityDateRange"
+              onClick={() => handleGenerateReport("rescueByCityDateRange")}
+              className="px-4 w-56 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 -mt-3"
+            >
+              Gerar
+            </button>
+          </div>
+
+          {/* ================================================================================ */}
 
 
 
