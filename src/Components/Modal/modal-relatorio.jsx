@@ -20,7 +20,7 @@ const Modal = ({ isVisible, onClose }) => {
 
     switch (reportType) {
       case "applicant":
-        endPoint = "/report/applicant/excel";
+        endPoint = `/report/applicant-between-dates/export?startDate=${startDate}&endDate=${endDate}`;
         break;
 
       case "rescueBySpecie":
@@ -34,7 +34,7 @@ const Modal = ({ isVisible, onClose }) => {
       case "rescueByCityDateRange":
         endPoint = `/list-rescue-city-between-dates/export?city=${searchTerm}&startDate=${startDate}&endDate=${endDate}`;
         break;
-      
+
       case "rescueByOriginDateRange":
         endPoint = `/list-rescue-origin-between-dates/export?origin=${searchTerm}&startDate=${startDate}&endDate=${endDate}`;
         break;
@@ -63,7 +63,9 @@ const Modal = ({ isVisible, onClose }) => {
       link.href = url;
       link.setAttribute(
         "download",
-        `relatorio:_Resgates_${searchTerm || "geral"}, ${startDate} até ${endDate}.xlsx`
+        `relatorio:_Resgates_${
+          searchTerm || "geral"
+        }, ${startDate} até ${endDate}.xlsx`
       );
       document.body.appendChild(link);
       link.click();
@@ -88,26 +90,50 @@ const Modal = ({ isVisible, onClose }) => {
           X
         </button>
         <div className="mt-5 text-center">
-          <h1 className="text-xl font-bold mb-4">Relatórios</h1>
-
-          {/* Botão para gerar relatório de solicitantes */}
-          <button
-            id="applicant"
-            onClick={() => handleGenerateReport("applicant")}
-            className="px-6 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
-          >
-            Gerar Relatório de solicitantes
-          </button>
+          <h1 className="text-2xl font-bold italic mb-4">Relatórios</h1>
 
           <hr className="my-4" />
+
+          <h2 className="text-lg font-bold mb-2 text-left">
+            Relatório de Solicitantes
+          </h2>
+
+          <div className="flex items-center gap-3">
+            {/* Campo para a data inicial */}
+            <input
+              type="date"
+              value={startDate}
+              onChange={(e) => setStartDate(e.target.value)}
+              className="w-full mb-3 p-2 border rounded-md"
+            />
+
+            {/* Campo para a data final */}
+            <input
+              type="date"
+              value={endDate}
+              onChange={(e) => setEndDate(e.target.value)}
+              className="w-full mb-3 p-2 border rounded-md"
+            />
+
+            {/* Botão para gerar relatório de espécie */}
+            <button
+              id="applicant"
+              onClick={() => handleGenerateReport("applicant")}
+              className="px-4 w-56 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 -mt-3"
+            >
+              Gerar
+            </button>
+          </div>
+
+
+          {/* ================================================================================ */}
+
+          <hr className="my-2" />
 
           <h2 className="text-lg font-bold mb-2 text-left">
             Relatório por Espécie
           </h2>
 
-
-
-          {/* ================================================================================ */}
           <div className="flex items-center gap-3">
             {/* Campo para o nome da espécie */}
             <input
@@ -143,8 +169,6 @@ const Modal = ({ isVisible, onClose }) => {
               Gerar
             </button>
           </div>
-
-
 
           {/* ================================================================================ */}
 
@@ -182,9 +206,6 @@ const Modal = ({ isVisible, onClose }) => {
           </div>
           {/* ================================================================================ */}
 
-
-
-
           <hr className="my-1" />
 
           <h2 className="text-lg font-bold mb-2 text-left">
@@ -192,16 +213,15 @@ const Modal = ({ isVisible, onClose }) => {
           </h2>
 
           <div className="flex items-center gap-3">
-            
             {/* Campo para termo de busca */}
-            <input 
-              type="text" 
-              value={searchTerm} 
+            <input
+              type="text"
+              value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="w-full mb-3 p-2 border rounded-md"
               placeholder="Ex: Aracaju"
             />
-            
+
             {/* Campo para a data inicial */}
             <input
               type="date"
@@ -230,7 +250,6 @@ const Modal = ({ isVisible, onClose }) => {
 
           {/* ================================================================================ */}
 
-          
           <hr className="my-1" />
 
           <h2 className="text-lg font-bold mb-2 text-left">
@@ -238,16 +257,15 @@ const Modal = ({ isVisible, onClose }) => {
           </h2>
 
           <div className="flex items-center gap-3">
-            
             {/* Campo para termo de busca */}
-            <input 
-              type="text" 
-              value={searchTerm} 
+            <input
+              type="text"
+              value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="w-full mb-3 p-2 border rounded-md"
               placeholder="Ex: Aracaju"
             />
-            
+
             {/* Campo para a data inicial */}
             <input
               type="date"
@@ -275,8 +293,6 @@ const Modal = ({ isVisible, onClose }) => {
           </div>
 
           {/* ================================================================================ */}
-
-
         </div>
       </div>
     </div>
