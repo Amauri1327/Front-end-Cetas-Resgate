@@ -19,7 +19,7 @@ const Modal = ({ isVisible, onClose }) => {
     let endPoint;
 
     switch (reportType) {
-      case "applicant":
+      case "solicitantes":
         endPoint = `/report/applicant-between-dates/export?startDate=${startDate}&endDate=${endDate}`;
         break;
 
@@ -64,7 +64,7 @@ const Modal = ({ isVisible, onClose }) => {
       link.setAttribute(
         "download",
         `relatorio:_Resgates_${
-          searchTerm || "geral"
+         searchTerm ? searchTerm : reportType || "geral"
         }, ${startDate} até ${endDate}.xlsx`
       );
       document.body.appendChild(link);
@@ -117,8 +117,8 @@ const Modal = ({ isVisible, onClose }) => {
 
             {/* Botão para gerar relatório de espécie */}
             <button
-              id="applicant"
-              onClick={() => handleGenerateReport("applicant")}
+              id="solicitantes"
+              onClick={() => handleGenerateReport("solicitantes")}
               className="px-4 w-56 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 -mt-3"
             >
               Gerar
