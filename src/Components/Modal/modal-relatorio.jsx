@@ -34,6 +34,10 @@ const Modal = ({ isVisible, onClose }) => {
       case "rescueByCityDateRange":
         endPoint = `/list-rescue-city-between-dates/export?city=${searchTerm}&startDate=${startDate}&endDate=${endDate}`;
         break;
+      
+      case "rescueByOriginDateRange":
+        endPoint = `/list-rescue-origin-between-dates/export?origin=${searchTerm}&startDate=${startDate}&endDate=${endDate}`;
+        break;
 
       default:
         break;
@@ -75,7 +79,7 @@ const Modal = ({ isVisible, onClose }) => {
   if (!isVisible) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center -mt-80">
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center -mt-10">
       <div className="bg-white p-5 rounded-md shadow-md w-7/12 ">
         <button
           onClick={onClose}
@@ -226,6 +230,51 @@ const Modal = ({ isVisible, onClose }) => {
 
           {/* ================================================================================ */}
 
+          
+          <hr className="my-1" />
+
+          <h2 className="text-lg font-bold mb-2 text-left">
+            Relatório Resgates por Origem do Animal
+          </h2>
+
+          <div className="flex items-center gap-3">
+            
+            {/* Campo para termo de busca */}
+            <input 
+              type="text" 
+              value={searchTerm} 
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full mb-3 p-2 border rounded-md"
+              placeholder="Ex: Aracaju"
+            />
+            
+            {/* Campo para a data inicial */}
+            <input
+              type="date"
+              value={startDate}
+              onChange={(e) => setStartDate(e.target.value)}
+              className="w-full mb-3 p-2 border rounded-md"
+            />
+
+            {/* Campo para a data final */}
+            <input
+              type="date"
+              value={endDate}
+              onChange={(e) => setEndDate(e.target.value)}
+              className="w-full mb-3 p-2 border rounded-md"
+            />
+
+            {/* Botão para gerar relatório de espécie */}
+            <button
+              id="rescueByOriginDateRange"
+              onClick={() => handleGenerateReport("rescueByOriginDateRange")}
+              className="px-4 w-56 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 -mt-3"
+            >
+              Gerar
+            </button>
+          </div>
+
+          {/* ================================================================================ */}
 
 
         </div>
