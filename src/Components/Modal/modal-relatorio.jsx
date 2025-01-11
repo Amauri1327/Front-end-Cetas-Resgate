@@ -6,25 +6,46 @@ const Modal = ({ isVisible, onClose }) => {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
 
+  const [startDateApplicant, setStartDateApplicant] = useState("");
+  const [endDateApplicant, setEndDateApplicant] = useState("");
+
+  const [specieName, setSpecieName] = useState("");
+  const [startDateSpecie, setStartDateSpecie] = useState("");
+  const [endDateSpecie, setEndDateSpecie] = useState("");
+
+
+
   const handleGenerateReport = async (reportType) => {
-    if (!startDate || !endDate) {
-      alert("Por favor, preencher as datas inicial e final.");
-      return;
-    }
-    if (reportType === "rescueBySpecie" && !searchTerm) {
-      alert("Por favor preencher o nome da espécie.");
-      return;
-    }
+    // if (!startDate || !endDate) {
+    //   alert("Por favor, preencher as datas inicial e final.");
+    //   return;
+    // }
+    // if (reportType === "rescueBySpecie" && !searchTerm) {
+    //   alert("Por favor preencher o nome da espécie.");
+    //   return;
+    // }
 
     let endPoint;
 
     switch (reportType) {
       case "solicitantes":
-        endPoint = `/report/applicant-between-dates/export?startDate=${startDate}&endDate=${endDate}`;
+        if(!startDateApplicant || !endDateApplicant){
+          alert('Por favor, preencher as datas inicial e final.');
+          return;
+        }
+        endPoint = `/report/applicant-between-dates/export?startDate=${startDateApplicant}&endDate=${endDateApplicant}`;
         break;
 
       case "rescueBySpecie":
-        endPoint = `/list-animalsName-between-dates/export?especie=${searchTerm}&dataInicio=${startDate}&dataFim=${endDate}`;
+        if(!startDateSpecie || !endDateSpecie){
+          alert("Por favor, preencher as datas inicial e final.");
+          return;
+        } else if (!specieName) {
+          alert("Por favor informar o nome da espécie.");
+          return;
+        }
+        endPoint = `/list-animalsName-between-dates/export?especie=${specieName}&dataInicio=${startDateSpecie}&dataFim=${endDateSpecie}`;
+        // /list-animalsName-between-dates/export?especie=papagaio&dataInicio=2023-05-01&dataFim=2023-05-30
         break;
 
       case "rescueByDateRange":
@@ -102,17 +123,19 @@ const Modal = ({ isVisible, onClose }) => {
             {/* Campo para a data inicial */}
             <input
               type="date"
-              value={startDate}
-              onChange={(e) => setStartDate(e.target.value)}
+              value={startDateApplicant}
+              onChange={(e) => setStartDateApplicant(e.target.value)}
               className="w-full mb-3 p-2 border rounded-md"
+              required
             />
 
             {/* Campo para a data final */}
             <input
               type="date"
-              value={endDate}
-              onChange={(e) => setEndDate(e.target.value)}
+              value={endDateApplicant}
+              onChange={(e) => setEndDateApplicant(e.target.value)}
               className="w-full mb-3 p-2 border rounded-md"
+              required
             />
 
             {/* Botão para gerar relatório de espécie */}
@@ -139,25 +162,28 @@ const Modal = ({ isVisible, onClose }) => {
             <input
               type="text"
               placeholder="Nome da espécie"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              value={specieName}
+              onChange={(e) => setSpecieName(e.target.value)}
               className="w-full mb-3 p-2 border rounded-md"
+              required
             />
 
             {/* Campo para a data inicial */}
             <input
               type="date"
-              value={startDate}
-              onChange={(e) => setStartDate(e.target.value)}
+              value={startDateSpecie}
+              onChange={(e) => setStartDateSpecie(e.target.value)}
               className="w-full mb-3 p-2 border rounded-md"
+              required
             />
 
             {/* Campo para a data final */}
             <input
               type="date"
-              value={endDate}
-              onChange={(e) => setEndDate(e.target.value)}
+              value={endDateSpecie}
+              onChange={(e) => setEndDateSpecie(e.target.value)}
               className="w-full mb-3 p-2 border rounded-md"
+              required
             />
 
             {/* Botão para gerar relatório de espécie */}
