@@ -2,9 +2,6 @@ import React, { useState } from "react";
 import { PiKeyReturnThin } from "react-icons/pi";
 
 const Modal = ({ isVisible, onClose }) => {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
 
   const [startDateApplicant, setStartDateApplicant] = useState("");
   const [endDateApplicant, setEndDateApplicant] = useState("");
@@ -13,17 +10,20 @@ const Modal = ({ isVisible, onClose }) => {
   const [startDateSpecie, setStartDateSpecie] = useState("");
   const [endDateSpecie, setEndDateSpecie] = useState("");
 
+  const [startDateRescue, setStartDateRescue] = useState("");
+  const [endDateRescue, setEndDateRescue] = useState("");
+
+  const [city, setCity] = useState("");
+  const [startDateCity, setStartDateCity] = useState("");
+  const [endDateCity, setEndDateCity] = useState("");
+
+  const [animalOrigin, setAnimalOrigin] = useState("");
+  const [startDateOrigin, setStartDateOrigin] = useState("");
+  const [endDateOrigin, setEndDateOrigin] = useState("");
+
 
 
   const handleGenerateReport = async (reportType) => {
-    // if (!startDate || !endDate) {
-    //   alert("Por favor, preencher as datas inicial e final.");
-    //   return;
-    // }
-    // if (reportType === "rescueBySpecie" && !searchTerm) {
-    //   alert("Por favor preencher o nome da espécie.");
-    //   return;
-    // }
 
     let endPoint;
 
@@ -49,15 +49,33 @@ const Modal = ({ isVisible, onClose }) => {
         break;
 
       case "rescueByDateRange":
-        endPoint = `/list-rescue-between-dates/export?startDate=${startDate}&endDate=${endDate}`;
+        if(!startDateRescue || !endDateRescue) {
+          alert("Por favor, preencher as datas inicial e final.");
+          return;
+        }
+        endPoint = `/list-rescue-between-dates/export?startDate=${startDateRescue}&endDate=${endDateRescue}`;
         break;
 
       case "rescueByCityDateRange":
-        endPoint = `/list-rescue-city-between-dates/export?city=${searchTerm}&startDate=${startDate}&endDate=${endDate}`;
+        if(!city) {
+          alert("Por favor digitar Cidade!");
+          return;
+        } else if (!startDateCity || !endDateCity) {
+          alert("Por favor, preencher as datas inicial e final.");
+          return;
+        }
+        endPoint = `/list-rescue-city-between-dates/export?city=${city}&startDate=${startDateCity}&endDate=${endDateCity}`;
         break;
 
       case "rescueByOriginDateRange":
-        endPoint = `/list-rescue-origin-between-dates/export?origin=${searchTerm}&startDate=${startDate}&endDate=${endDate}`;
+        if (!animalOrigin) {
+          alert("Digite a origem!");
+          return;
+        } else if(!startDateOrigin || !endDateOrigin){
+          alert("Por favor, preencher as datas inicial e final.");
+          return;
+        }
+        endPoint = `/list-rescue-origin-between-dates/export?origin=${animalOrigin}&startDate=${startDateOrigin}&endDate=${endDateOrigin}`;
         break;
 
       default:
@@ -85,8 +103,8 @@ const Modal = ({ isVisible, onClose }) => {
       link.setAttribute(
         "download",
         `relatorio:_Resgates_${
-         searchTerm ? searchTerm : reportType || "geral"
-        }, ${startDate} até ${endDate}.xlsx`
+         reportType || "geral"
+        },.xlsx`
       );
       document.body.appendChild(link);
       link.click();
@@ -208,17 +226,19 @@ const Modal = ({ isVisible, onClose }) => {
             {/* Campo para a data inicial */}
             <input
               type="date"
-              value={startDate}
-              onChange={(e) => setStartDate(e.target.value)}
+              value={startDateRescue}
+              onChange={(e) => setStartDateRescue(e.target.value)}
               className="w-full mb-3 p-2 border rounded-md"
+              required
             />
 
             {/* Campo para a data final */}
             <input
               type="date"
-              value={endDate}
-              onChange={(e) => setEndDate(e.target.value)}
+              value={endDateRescue}
+              onChange={(e) => setEndDateRescue(e.target.value)}
               className="w-full mb-3 p-2 border rounded-md"
+              required
             />
 
             {/* Botão para gerar relatório de espécie */}
@@ -242,26 +262,29 @@ const Modal = ({ isVisible, onClose }) => {
             {/* Campo para termo de busca */}
             <input
               type="text"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              value={city}
+              onChange={(e) => setCity(e.target.value)}
               className="w-full mb-3 p-2 border rounded-md"
               placeholder="Ex: Aracaju"
+              required
             />
 
             {/* Campo para a data inicial */}
             <input
               type="date"
-              value={startDate}
-              onChange={(e) => setStartDate(e.target.value)}
+              value={startDateCity}
+              onChange={(e) => setStartDateCity(e.target.value)}
               className="w-full mb-3 p-2 border rounded-md"
+              required
             />
 
             {/* Campo para a data final */}
             <input
               type="date"
-              value={endDate}
-              onChange={(e) => setEndDate(e.target.value)}
+              value={endDateCity}
+              onChange={(e) => setEndDateCity(e.target.value)}
               className="w-full mb-3 p-2 border rounded-md"
+              required
             />
 
             {/* Botão para gerar relatório de espécie */}
@@ -286,26 +309,29 @@ const Modal = ({ isVisible, onClose }) => {
             {/* Campo para termo de busca */}
             <input
               type="text"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              value={animalOrigin}
+              onChange={(e) => setAnimalOrigin(e.target.value)}
               className="w-full mb-3 p-2 border rounded-md"
-              placeholder="Ex: Aracaju"
+              placeholder="Ex: Apreensão/Resgate"
+              required
             />
 
             {/* Campo para a data inicial */}
             <input
               type="date"
-              value={startDate}
-              onChange={(e) => setStartDate(e.target.value)}
+              value={startDateOrigin}
+              onChange={(e) => setStartDateOrigin(e.target.value)}
               className="w-full mb-3 p-2 border rounded-md"
+              required
             />
 
             {/* Campo para a data final */}
             <input
               type="date"
-              value={endDate}
-              onChange={(e) => setEndDate(e.target.value)}
+              value={endDateOrigin}
+              onChange={(e) => setEndDateOrigin(e.target.value)}
               className="w-full mb-3 p-2 border rounded-md"
+              required
             />
 
             {/* Botão para gerar relatório de espécie */}
