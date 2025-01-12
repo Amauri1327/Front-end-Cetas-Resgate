@@ -86,6 +86,8 @@ const ListaResgates = () => {
               <th className="px-4 py-2 border border-gray-300">Data</th>
               <th className="px-4 py-2 border border-gray-300">Situação</th>
               <th className="px-4 py-2 border border-gray-300">Destino</th>
+              <th className="px-4 py-2 border border-gray-300">Quantidade</th>
+              <th className="px-4 py-2 border border-gray-300">Origem</th>
               <th className="px-4 py-2 border border-gray-300">Ações</th>
             </tr>
           </thead>
@@ -113,6 +115,14 @@ const ListaResgates = () => {
                 <td className="px-4 py-2 border border-gray-300">
                   {rescue.animalDestination}
                 </td>
+                <td className="px-4 py-2 border border-gray-300">
+                  {rescue.animalQuantity}
+                </td>
+                <td className="px-4 py-2 border border-gray-300">
+                  {rescue.origin}
+                </td>
+                
+
                 <td className="px-4 py-2 border border-gray-300">
                   <div className="flex gap-6">
                     <MdDeleteForever
