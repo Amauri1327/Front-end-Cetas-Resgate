@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { MdOutlineAddBox } from "react-icons/md";
 import { HiOutlineDocumentReport } from "react-icons/hi";
 import FormularioResgate from "../../Components/Form/FormularioResgate"; // Import do componente
-import ListaResgates from "../Lista-Resgates/ListaResgates";
 import Modal from "../Modal/modal-relatorio";
 
 export const Menu = () => {
