@@ -79,7 +79,7 @@ const ListaResgates = () => {
   }
 
   return (
-    <div className="mt-6">
+    <div className="mt-10">
       <h2 className="text-xl font-bold mb-4 text-center">Lista de Resgates</h2>
       <div className="overflow-x-auto">
         <table className="table-auto w-2/3 mx-auto border border-gray-300 shadow-sm">
@@ -152,7 +152,7 @@ const ListaResgates = () => {
           <button
             disabled={page === 0}
             onClick={() => setPage((prev) => prev - 1)} // Atualiza apenas o estado
-            className="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded disabled:opacity-50"
+            className="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-xl disabled:opacity-50"
           >
             Anterior
           </button>
@@ -162,7 +162,7 @@ const ListaResgates = () => {
           <button
             disabled={page === totalPages - 1}
             onClick={() => setPage((prev) => prev + 1)} // Atualiza apenas o estado
-            className="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded disabled:opacity-50"
+            className="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-xl disabled:opacity-50"
           >
             Próxima
           </button>
