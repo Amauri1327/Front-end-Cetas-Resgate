@@ -4,17 +4,16 @@ import { FaEdit } from "react-icons/fa";
 import EditModal from "../Modal/modal-editar-resgate";
 
 const ListaResgates = () => {
-  const [rescues, setRescues] = useState([]); // Estado para armazenar os dados
-  const [loading, setLoading] = useState(true); // Estado para controlar o carregamento
-  const [error, setError] = useState(null); // Estado para controlar erros
-  const [selectedId, setSelectedId] = useState(null); // Armazenando o id do resgate a ser editado
-  const [showModal, setShowModal] = useState(false); // Controlando o estado de visibilidade do modal
+  const [rescues, setRescues] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [selectedId, setSelectedId] = useState(null);
+  const [showModal, setShowModal] = useState(false);
 
-  const [page, setPage] = useState(0); // Estado para controlar a página atual
-  const [size, setSize] = useState(10); // Estado para controlar o tamanho da página
-  const [totalPages, setTotalPages] = useState(0); // Estado para armazenar o total de páginas
+  const [page, setPage] = useState(0);
+  const [size, setSize] = useState(10);
+  const [totalPages, setTotalPages] = useState(0);
 
-  // Função para buscar os dados da API
   const fetchRescues = async () => {
     try {
       const response = await fetch(
@@ -29,12 +28,11 @@ const ListaResgates = () => {
       setTotalPages(data.totalPages);
       setLoading(false);
     } catch (err) {
-      setError("Erro ao carregar os dados."); // Define uma mensagem de erro
+      setError("Erro ao carregar os dados.");
       setLoading(false);
     }
   };
 
-  // Função para deletar dado da Api
   const deleteData = async (id) => {
     try {
       const resp = await fetch(`http://localhost:8080/resgates/${id}`, {
@@ -45,7 +43,6 @@ const ListaResgates = () => {
         throw new Error("Error ao deletar o resgate.");
       }
 
-      // Atualizar o estado local removendo o resgate excluido
       setRescues(rescues.filter((rescue) => rescue.id !== id));
       alert("Resgate deletado com sucesso!");
     } catch (error) {
@@ -64,12 +61,10 @@ const ListaResgates = () => {
     setSelectedId(null);
   };
 
-  // useEffect para buscar os dados ao carregar o componente
   useEffect(() => {
-    fetchRescues(); // Carrega os dados iniciais
+    fetchRescues();
   }, [page, size]);
 
-  // Renderização condicional
   if (loading) {
     return <p className="text-center mt-6">Carregando...</p>;
   }
@@ -79,101 +74,102 @@ const ListaResgates = () => {
   }
 
   return (
-    <div className="mt-10">
-      <h2 className="text-xl font-bold mb-4 text-center">Lista de Resgates</h2>
-      <div className="overflow-x-auto">
-        <table className="table-auto w-2/3 mx-auto border border-gray-300 shadow-sm">
-          <thead className="bg-gray-200">
-            <tr>
-              <th className="px-4 py-2 border border-gray-300">Solicitante</th>
-              <th className="px-4 py-2 border border-gray-300">Telefone</th>
-              <th className="px-4 py-2 border border-gray-300">Espécie</th>
-              <th className="px-4 py-2 border border-gray-300">Endereço</th>
-              <th className="px-4 py-2 border border-gray-300">Data</th>
-              <th className="px-4 py-2 border border-gray-300">Situação</th>
-              <th className="px-4 py-2 border border-gray-300">Destino</th>
-              <th className="px-4 py-2 border border-gray-300">Quantidade</th>
-              <th className="px-4 py-2 border border-gray-300">Origem</th>
-              <th className="px-4 py-2 border border-gray-300">Ações</th>
-            </tr>
-          </thead>
-          <tbody>
-            {rescues.map((rescue) => (
-              <tr key={rescue.id} className="hover:bg-gray-100">
-                <td className="px-4 py-2 border border-gray-300">
-                  {rescue.applicant}
-                </td>
-                <td className="px-4 py-2 border border-gray-300">
-                  {rescue.phoneApplicant}
-                </td>
-                <td className="px-4 py-2 border border-gray-300">
-                  {rescue.specie}
-                </td>
-                <td className="px-4 py-2 border border-gray-300">
-                  {rescue.address}, {rescue.neighborhood}, {rescue.city}
-                </td>
-                <td className="px-4 py-2 border border-gray-300">
-                  {rescue.data}
-                </td>
-                <td className="px-4 py-2 border border-gray-300">
-                  {rescue.animalSituation}
-                </td>
-                <td className="px-4 py-2 border border-gray-300">
-                  {rescue.animalDestination}
-                </td>
-                <td className="px-4 py-2 border border-gray-300">
-                  {rescue.animalQuantity}
-                </td>
-                <td className="px-4 py-2 border border-gray-300">
-                  {rescue.origin}
-                </td>
-
-                <td className="px-4 py-2 border border-gray-300">
-                  <div className="flex gap-6">
-                    <MdDeleteForever
-                      color="#a52a2a"
-                      onClick={() => deleteData(rescue.id)}
-                      className="pl-2 cursor-pointer"
-                      size={46}
-                    />
-                    <FaEdit
-                      onClick={() => handleEdit(rescue.id)} // Abri o modal de edição
-                      className="pl-2 cursor-pointer"
-                      size={36}
-                    />
-                  </div>
-                </td>
+    <div className="min-h-screen flex flex-col">
+      {/* Conteúdo principal */}
+      <div className="flex-grow mt-10">
+        <h2 className="text-xl font-bold mb-4 text-center">Lista de Resgates</h2>
+        <div className="overflow-x-auto">
+          <table className="table-auto w-2/3 mx-auto border border-gray-300 shadow-sm">
+            <thead className="bg-gray-200">
+              <tr>
+                <th className="px-4 py-2 border border-gray-300">Solicitante</th>
+                <th className="px-4 py-2 border border-gray-300">Telefone</th>
+                <th className="px-4 py-2 border border-gray-300">Espécie</th>
+                <th className="px-4 py-2 border border-gray-300">Endereço</th>
+                <th className="px-4 py-2 border border-gray-300">Data</th>
+                <th className="px-4 py-2 border border-gray-300">Situação</th>
+                <th className="px-4 py-2 border border-gray-300">Destino</th>
+                <th className="px-4 py-2 border border-gray-300">Quantidade</th>
+                <th className="px-4 py-2 border border-gray-300">Origem</th>
+                <th className="px-4 py-2 border border-gray-300">Ações</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-
-        <div className="flex justify-center items-center mt-4 gap-4">
-          <button
-            disabled={page === 0}
-            onClick={() => setPage((prev) => prev - 1)} // Atualiza apenas o estado
-            className="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-xl disabled:opacity-50"
-          >
-            Anterior
-          </button>
-          <span>
-            Página {page + 1} de {totalPages}
-          </span>
-          <button
-            disabled={page === totalPages - 1}
-            onClick={() => setPage((prev) => prev + 1)} // Atualiza apenas o estado
-            className="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-xl disabled:opacity-50"
-          >
-            Próxima
-          </button>
+            </thead>
+            <tbody>
+              {rescues.map((rescue) => (
+                <tr key={rescue.id} className="hover:bg-gray-100">
+                  <td className="px-4 py-2 border border-gray-300">
+                    {rescue.applicant}
+                  </td>
+                  <td className="px-4 py-2 border border-gray-300">
+                    {rescue.phoneApplicant}
+                  </td>
+                  <td className="px-4 py-2 border border-gray-300">
+                    {rescue.specie}
+                  </td>
+                  <td className="px-4 py-2 border border-gray-300">
+                    {rescue.address}, {rescue.neighborhood}, {rescue.city}
+                  </td>
+                  <td className="px-4 py-2 border border-gray-300">
+                    {rescue.data}
+                  </td>
+                  <td className="px-4 py-2 border border-gray-300">
+                    {rescue.animalSituation}
+                  </td>
+                  <td className="px-4 py-2 border border-gray-300">
+                    {rescue.animalDestination}
+                  </td>
+                  <td className="px-4 py-2 border border-gray-300">
+                    {rescue.animalQuantity}
+                  </td>
+                  <td className="px-4 py-2 border border-gray-300">
+                    {rescue.origin}
+                  </td>
+                  <td className="px-4 py-2 border border-gray-300">
+                    <div className="flex gap-6">
+                      <MdDeleteForever
+                        color="#a52a2a"
+                        onClick={() => deleteData(rescue.id)}
+                        className="pl-2 cursor-pointer"
+                        size={46}
+                      />
+                      <FaEdit
+                        onClick={() => handleEdit(rescue.id)}
+                        className="pl-2 cursor-pointer"
+                        size={36}
+                      />
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <div className="flex justify-center items-center mt-4 gap-4">
+            <button
+              disabled={page === 0}
+              onClick={() => setPage((prev) => prev - 1)}
+              className="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-xl disabled:opacity-50"
+            >
+              Anterior
+            </button>
+            <span>
+              Página {page + 1} de {totalPages}
+            </span>
+            <button
+              disabled={page === totalPages - 1}
+              onClick={() => setPage((prev) => prev + 1)}
+              className="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-xl disabled:opacity-50"
+            >
+              Próxima
+            </button>
+          </div>
         </div>
+        <EditModal
+          show={showModal}
+          handleClose={handleCloseModal}
+          id={selectedId}
+          handleEdit={fetchRescues}
+        />
       </div>
-      <EditModal
-        show={showModal}
-        handleClose={handleCloseModal}
-        id={selectedId}
-        handleEdit={fetchRescues} //Passando a função para recarregar os dados após edição
-      />
     </div>
   );
 };
