@@ -10,17 +10,23 @@ const ListaResgates = () => {
   const [selectedId, setSelectedId] = useState(null); // Armazenando o id do resgate a ser editado
   const [showModal, setShowModal] = useState(false); // Controlando o estado de visibilidade do modal
 
+  const [page, setPage] = useState(0); // Estado para controlar a página atual
+  const [size, setSize] = useState(10); // Estado para controlar o tamanho da página
+  const [totalPages, setTotalPages] = useState(0); // Estado para armazenar o total de páginas
 
   // Função para buscar os dados da API
   const fetchRescues = async () => {
     try {
-      const response = await fetch("http://localhost:8080/resgates");
+      const response = await fetch(
+        `http://localhost:8080/resgates/page?page=${page}&size=${size}&sort=id,asc`
+      );
       if (!response.ok) {
         throw new Error("Erro ao buscar os dados");
       }
       const data = await response.json();
 
-      setRescues(data);
+      setRescues(data.content);
+      setTotalPages(data.totalPages);
       setLoading(false);
     } catch (err) {
       setError("Erro ao carregar os dados."); // Define uma mensagem de erro
@@ -51,17 +57,17 @@ const ListaResgates = () => {
   const handleEdit = (id) => {
     setSelectedId(id);
     setShowModal(true);
-  }
+  };
 
   const handleCloseModal = () => {
     setShowModal(false);
     setSelectedId(null);
-  }
+  };
 
   // useEffect para buscar os dados ao carregar o componente
   useEffect(() => {
     fetchRescues(); // Carrega os dados iniciais
-  }, []);
+  }, [page, size]);
 
   // Renderização condicional
   if (loading) {
@@ -121,7 +127,6 @@ const ListaResgates = () => {
                 <td className="px-4 py-2 border border-gray-300">
                   {rescue.origin}
                 </td>
-                
 
                 <td className="px-4 py-2 border border-gray-300">
                   <div className="flex gap-6">
@@ -142,8 +147,28 @@ const ListaResgates = () => {
             ))}
           </tbody>
         </table>
+
+        <div className="flex justify-center items-center mt-4 gap-4">
+          <button
+            disabled={page === 0}
+            onClick={() => setPage((prev) => prev - 1)} // Atualiza apenas o estado
+            className="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded disabled:opacity-50"
+          >
+            Anterior
+          </button>
+          <span>
+            Página {page + 1} de {totalPages}
+          </span>
+          <button
+            disabled={page === totalPages - 1}
+            onClick={() => setPage((prev) => prev + 1)} // Atualiza apenas o estado
+            className="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded disabled:opacity-50"
+          >
+            Próxima
+          </button>
+        </div>
       </div>
-      <EditModal 
+      <EditModal
         show={showModal}
         handleClose={handleCloseModal}
         id={selectedId}
